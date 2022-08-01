@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <meta charset="utf-8"/>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugin-preload.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <style>
+      #display_stage_background {
+        width: 100vw;
+        background-color: white;
+        z-index: -1;
+      }
+
+      #display_stage {
+        position: fixed;
+        left: 1vw;
+        top: 1nh;
+        height: 98vh;
+        width: 98vw;
+        background-color: white;
+        box-shadow: 1px 1px 1px #999;
+        border-radius: 15px;
+        z-index: 0;
+        overflow-y: hidden;
+        overflow-x: hidden;
+      }
+    </style>
+    <div id="display_stage_background"></div>
+    <div id="display_stage"></div>
+    <script src="main.js"></script>
+  </body>
+  </script>
+</html>
