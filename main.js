@@ -98,9 +98,9 @@
 
      }
    };
-   timeline.push(debrief_block);
+   /*timeline.push(debrief_block);
 
    
 
    /* start the experiment */
-   jsPsych.run(timeline);
+   /*jsPsych.run(timeline);*/
