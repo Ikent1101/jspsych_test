@@ -2,10 +2,20 @@
    
        /* initialize jsPsych */
        var jsPsych = initJsPsych({
-        on_finish: function() {
-          jsPsych.data.displayData();
-        }
-      });
+            timeline: timeline,
+            display_element: 'display_stage',
+            on_finish: function (data) {
+       
+                  var datajs = jsPsych.data.get().json();
+                 
+                Qualtrics.SurveyEngine.setEmbeddedData("datajs", datajs);
+         
+                jQuery('display_stage').remove();
+                jQuery('display_stage_background').remove();
+         
+                qthis.clickNextButton();
+            }
+        });
 
     /* create timeline */
    var timeline = [];
