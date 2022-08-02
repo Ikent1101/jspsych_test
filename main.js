@@ -1,7 +1,7 @@
    var repo_site="https://ikent1101.github.io/jspsych_test/";
    
        /* initialize jsPsych */
-       var jsPsych = initJsPsych({
+       /*var jsPsych = initJsPsych({
         on_finish: function() {
           jsPsych.data.displayData();
         }
