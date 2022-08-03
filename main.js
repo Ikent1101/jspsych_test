@@ -1,116 +1,68 @@
    var repo_site="https://ikent1101.github.io/jspsych_test/";
    
-       /* initialize jsPsych */
-       var jsPsych = initJsPsych({
-            timeline: timeline,
-            display_element: 'display_stage',
-            on_finish: function (data) {
-       
-                  var datajs = jsPsych.data.get().json();
-                 
-                Qualtrics.SurveyEngine.setEmbeddedData("datajs", datajs);
-         
-                jQuery('display_stage').remove();
-                jQuery('display_stage_background').remove();
-         
-                qthis.clickNextButton();
-            }
-        });
+      /* create timeline */
+var timeline = [];
 
-    /* create timeline */
-   var timeline = [];
+/* define welcome message trial */
+var welcome = {
+  type: "html-keyboard-response",
+  stimulus: "スペースキーを押すと実験を開始できます。"
+};
+timeline.push(welcome);
 
-   /* preload images */
-   var preload = {
-     type: jsPsychPreload,
-     images: [repo_site+'img/blue.png', repo_site+'img/orange.png']
-   };
-   timeline.push(preload);
+/* define instructions trial */
+var instructions = {
+  type: "html-keyboard-response",
+  stimulus: "<p>この実験では画面の中央に円が表示されます。 </p>" +
+      "<p>もし円が <strong>青なら</strong>、Fキーを押してください。</p>" +
+      "<p>もし円が <strong>オレンジなら</strong>、Jキーを押してください。</p>" +
+      "<div style='width: 700px;'>"+
+      "<div style='float: left;'><img src='"+ repo_site +"img/blue.png'></img>" +
+      "<p class='small'><strong>Fキーを押してください</strong></p></div>" +
+      "<div class='float: right;'><img src='"+ repo_site +"img/orange.png'></img>" +
+      "<p class='small'><strong>Jキーを押してください</strong></p></div>" +
+      "</div>"+
+      "<p>スペースキーを押すと実験を開始できます。</p>",
+  post_trial_gap: 2000
+};
+timeline.push(instructions);
 
-   /* define welcome message trial */
-   var welcome = {
-     type: jsPsychHtmlKeyboardResponse,
-     stimulus: "何かキーを押すと実験が始まります"
-   };
-   timeline.push(welcome);
+/* test trials */
+var test_stimuli = [
+  { stimulus: repo_site +"img/blue.png", data: {test_part: 'test', correct_response: 'f'}},
+  { stimulus: repo_site +"img/orange.png", data: {test_part: 'test', correct_response: 'j'}}
+];
 
-   /* define instructions trial */
-   var instructions = {
-     type: jsPsychHtmlKeyboardResponse,
-     stimulus: `
-       <p>画面の中央に丸が表示されます</p>
-       <p>もし丸が <strong>青なら</strong>、キーボードの F キーを押してください</p>
-       <p>もし丸が <strong>オレンジなら</strong>、キーボードの J キーを押してください</p>
-       <div style='width: 700px;'><div style='float: left;'><img src='`+ repo_site +`img/blue.png'></img>
-       <p class='small'><strong>Press the F key</strong></p></div>
-       <div style='float: right;'><img src='`+ repo_site +`img/orange.png'></img>
-       <p class='small'><strong>Press the J key</strong></p></div></div>
-       <p>Press any key to begin.</p>
-     `,
-     post_trial_gap: 2000
-   };
-   timeline.push(instructions);
+var fixation = {
+  type: 'html-keyboard-response',
+  stimulus: '<div style="font-size:60px;">+</div>',
+  choices: jsPsych.NO_KEYS,
+  trial_duration: function(){
+    return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
+    },
+  data: {test_part: 'fixation'}
+}
 
-   /* define trial stimuli array for timeline variables */
-   var test_stimuli = [
-     { stimulus: repo_site +"img/blue.png",  correct_response: 'f'},
-     { stimulus: repo_site +"img/orange.png",  correct_response: 'j'}
-   ];
+var test = {
+  type: "image-keyboard-response",
+  stimulus: jsPsych.timelineVariable('stimulus'),
+  choices: ['f', 'j'],
+  data: jsPsych.timelineVariable('data'),
+  on_finish: function(data){
+    data.correct = data.key_press == jsPsych.pluginAPI.convertKeyCharacterToKeyCode(data.correct_response);
+    }
+}
 
-   /* define fixation and test trials */
-   var fixation = {
-     type: jsPsychHtmlKeyboardResponse,
-     stimulus: '<div style="font-size:60px;">+</div>',
-     choices: "NO_KEYS",
-     trial_duration: function(){
-       return jsPsych.randomization.sampleWithoutReplacement([250, 500, 750, 1000, 1250, 1500, 1750, 2000], 1)[0];
-     },
-     data: {
-       task: 'fixation'
-     }
-   };
+var test_procedure = {
+  timeline: [fixation, test],
+  timeline_variables: test_stimuli,
+  randomize_order: true,
+  repetitions: 5
+}
 
-   var test = {
-     type: jsPsychImageKeyboardResponse,
-     stimulus: jsPsych.timelineVariable('stimulus'),
-     choices: ['f', 'j'],
-     data: {
-       task: 'response',
-       correct_response: jsPsych.timelineVariable('correct_response')
-     },
-     on_finish: function(data){
-       data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
-     }
-   };
-
-   /* define test procedure */
-   var test_procedure = {
-     timeline: [fixation, test],
-     timeline_variables: test_stimuli,
-     repetitions: 5,
-     randomize_order: true
-   };
-   timeline.push(test_procedure);
-
-       /* define debrief */
-   var debrief_block = {
-     type: jsPsychHtmlKeyboardResponse,
-     stimulus: function() {
-
-       var trials = jsPsych.data.get().filter({task: 'response'});
-       var correct_trials = trials.filter({correct: true});
-       var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-       var rt = Math.round(correct_trials.select('rt').mean());
-
-       return `<p>You responded correctly on ${accuracy}% of the trials.</p>
-         <p>Your average response time was ${rt}ms.</p>
-         <p>Press any key to complete the experiment. Thank you!</p>`;
-
-     }
-   };
-   timeline.push(debrief_block);
+timeline.push(test_procedure);
 
    
 
    /* start the experiment */
-   /*jsPsych.run(timeline);*/
+   /*jsp.run(timeline);*/
