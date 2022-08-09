@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My experiment</title>
+  <meta charset="UTF-8" />
+  <script src="version/jspsych7.2.3/jspsych.js"></script>
+  <script src="version/jspsych7.2.3/plugin-html-keyboard-response.js"></script>
+  <!--<script src="version/jspsych7.2.3/plugin-image-keyboard-response.js"></script>
+    <script src="version/jspsych7.2.3/plugin-preload.js"></script>-->
+  <link href="version/jspsych7.2.3/jspsych.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body></body>
+<script>
+    const jsPsych = initJsPsych();
+
+const createTrial = (stim) => {
+  const trial = {
+    type: jsPsychHtmlKeyboardResponse, // 試行のタイプ指定
+    stimulus: stim, // 提示する刺激
+    choices: ['f', 'j'],
+    post_trial_gap: 500,
+  };
+  return trial;
+};
+
+const trial1 = createTrial('<<<<<');
+const trial2 = createTrial('>>>>>');
+const trial3 = createTrial('<<><<');
+const trial4 = createTrial('>><>>');
+const trial5 = createTrial('-->--');
+const trial6 = createTrial('--<--');
+
+jsPsych.run([trial1, trial2, trial3, trial4]);
+</script>
+
+</html>

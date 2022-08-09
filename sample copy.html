@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <meta charset="UTF-8" />
+    <script src="version/jspsych7.2.3/jspsych.js"></script>
+    <script src="version/jspsych7.2.3/plugin-html-keyboard-response.js"></script>
+    <!--<script src="version/jspsych7.2.3/plugin-image-keyboard-response.js"></script>
+    <script src="version/jspsych7.2.3/plugin-preload.js"></script>-->
+    <link href="version/jspsych7.2.3/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+    const jsPsych = initJsPsych();
+
+    const trial = {
+    type: jsPsychHtmlKeyboardResponse, //試行のタイプ指定
+    stimulus: '>>>>', // 提示する刺激
+    choices:['j','f'], //j or f のみ
+    post_trial_gap:500 //試行終了後500ミリ秒の空白
+  }
+
+  const trial2 = {
+    type: jsPsychHtmlKeyboardResponse, //試行のタイプ指定
+    stimulus: '>>>>', // 提示する刺激
+    choices:['j','f'], //j or f のみ
+    post_trial_gap:500 //試行終了後500ミリ秒の空白
+  }
+
+  jsPsych.run([trial,trial2]); // 提示順序の指定
+  </script>
+</html>
