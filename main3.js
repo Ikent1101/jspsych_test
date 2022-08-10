@@ -18,7 +18,7 @@ var combi_sti=jsPsych.randomization.factorial(sti,1);
 
 const fixation = {
     type: 'html-keyboard-response',
-    stimulus: '<p style="font-size: 48px">+</p>',
+    stimulus: '<center><p style="font-size: 48px">+</p></center>',
     choices: jsPsych.NO_KEYS,
     trial_duration: 500,
 };
@@ -38,8 +38,8 @@ const fixation = {
             }else{
                 var cuename="オレンジ色";
             };
-            var stimu='<p style="font-size: 40px">'+cuename+'</p>'+
-                    '<img src="'+git_site+'img/' +jsPsych.timelineVariable('cue')+ '.png"></img>';
+            var stimu='<center><p style="font-size: 40px">'+cuename+'</p>'+
+                    '<img src="'+git_site+'img/' +jsPsych.timelineVariable('cue')+ '.png"></img></center>';
             return stimu;
             return cuename;
         },
