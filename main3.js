@@ -1,3 +1,4 @@
+var git_site="https://ikent1101.github.io/jspsych_test/";
 var timeline = [];
 
 
@@ -38,7 +39,7 @@ const fixation = {
                 var cuename="オレンジ色";
             };
             var stimu='<p style="font-size: 40px">'+cuename+'</p>'+
-                    '<img src="img/' +jsPsych.timelineVariable('cue')+ '.png"></img>';
+                    '<img src="'+git_site+'img/' +jsPsych.timelineVariable('cue')+ '.png"></img>';
             return stimu;
             return cuename;
         },
@@ -55,7 +56,7 @@ const fixation = {
     const trls = {
         type: 'html-keyboard-response',
         stimulus: function(){
-            var tar_sti='<center><img src="img/'+jsPsych.timelineVariable('target')+'.png" width="100%"></center>';
+            var tar_sti='<center><img src="'+git_site+'img/'+jsPsych.timelineVariable('target')+'.png" width="100%"></center>';
             return tar_sti;
         },
         choices: ['f', 'j'],
